@@ -74,6 +74,6 @@
       pip: name=awscli state=present
 
   roles:
-    #- wunzeco.java
-    #- ogonna.iwunze.jenkins
+    - wunzeco.java
+    - ogonna.iwunze.jenkins
     - ansible-jenkins-extra
