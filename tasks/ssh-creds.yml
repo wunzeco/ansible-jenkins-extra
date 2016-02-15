@@ -1,0 +1,15 @@
+---
+
+- name: Create jenkins user .ssh directory
+  file: path={{ jenkins_extra_home }}/.ssh owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} state=directory
+
+- name: Copy jenkins user ssh private keys for Git repo access
+  copy: content="{{ item.private }}" dest={{ jenkins_extra_home }}/.ssh/{{ item.keyname }} owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0600
+  with_items: jenkins_extra_ssh_keys
+
+- name: Copy jenkins user ssh public keys
+  copy: content="{{ item.public }}" dest={{ jenkins_extra_home }}/.ssh/{{ item.keyname }}.pub owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0644
+  with_items: jenkins_extra_ssh_keys
+
+- name: Create jenkins ssh config file
+  template: src=ssh_config.j2 dest={{ jenkins_extra_home }}/.ssh/config owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0644

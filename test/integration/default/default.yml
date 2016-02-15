@@ -1,0 +1,79 @@
+---
+- hosts: test-kitchen
+
+  vars:
+    #########################
+    ##  Jenkins Job Creds  ##
+    #########################
+    jenkins_extra_jenkins_creds_config:
+      - id: infra-myawesomerepo-git-creds-id
+        description: infra-myawesomerepo
+        key_file: /var/lib/jenkins/.ssh/infra-myawesomerepo
+        user: jenkins
+        type: ssh-private-key
+      - id: infra-aws-access-key-id-creds-id
+        description: infra-aws-access-key-id
+        secret: 'someAwsAccessKeyId'
+        type: secret-text
+      - id: infra-aws-secret-access-key-creds-id
+        description: infra-aws-secret-access-key
+        secret: 'someAwsSecreteAccessKey'
+        type: secret-text
+      #- id: infra-nexus-login-creds-id
+      #  description: infra-nexus-login
+      #  user: jenkins
+      #  pass: P@ssword!
+      #  type: userpass
+    #######################
+    ##  AWS Credentials  ## 
+    #######################
+    jenkins_extra_aws_creds:
+      - profile: default
+        aws_access_key_id: 'someAwsAccessKeyId'
+        aws_secret_access_key: 'someAwsSecretAccessKey'
+        region: 'eu-central-1'
+    ########################
+    ##  Jenkins SSH Keys  ##
+    ########################
+    jenkins_extra_ssh_keys:
+      # infra-myawesomekey
+      - keyname: infra-myawesomekey
+        public: |
+          ssh-rsa AAAAB3NzaC1yc2EAAAATAQABAAABAQDKAkJSkrlmO0dFgTio0WDGNJMztSBqyEyhCitj7Y9j/T5XO1s2pLlSNiRBbWIEkS1K3P6L4Uwxqu9WI7zIDyKkS1f6d3fCbl+5FQMUMb/x737BEaM7enO4oeHyldt/AWjqMfenLxZsabmKQJvlNN0e4nks+kO/F4AuAJwI0RaONHU7mjNEYl0pSXOURIHlNeFY87yJ0R/SPmk3l0xAArR8NqpAikLCdT7xetquboUqX+P1Jz0zL4pHFk/jXE8424Sd4UaYL/uvGOQnVJRxLF2/lYKD9y9WAOZ/3c4B7RBx8UYvIOXDj8/+sNCWeRaCizgFq5MZ4oKlYJ9H3qsYFezD infra-myawesomekey@jenkins
+        private: |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIIEpAIBAAKCAQEAygJCUpK5ZjtHWoE4qNFgxjSTM7UgashMoQorY+2PY/0+Vztb
+          O3pzuKHh8pXbfwFo6jH3py8WbGm5ikCb5TTdHuJ5LPpDvxeALgCcCNEWjjR1O5oz
+          RGJdKUlzlESB5TXhWPO8idEf0j5pN5dMQAK0fDaqQIpCwnU+8Xrarm6FKl/j9Sc9
+          My+KRxZP41xPONuEneFGmC/7rxjkJ1SUcSxdv5WCg/cvVgDmf93OAe0QcfFGLyDl
+          w4/P/rDQlnkWgos4BauTGeKCpWCfR96rGBXswwIDAQABAoIBAQCF2gNaNXB1pfe8
+          VbjEEwtQM8BC7SBEi+APgjW9Ds3xoFCr22T+hz/gahuOIvAC8ssyyxMfCxtfkJpp
+          WjAyKtoNmeDTBa0YFJlRYgQB75FzfW+EUio9sLhRa5h4A+QWVKBtHaHnrfnelZg4
+          HtxqmJqbCLDTura83qTgmAZ8r507wVypgYRjcvKB3lAbptGGlSYe43VR/XbMGR3k
+          YhVDr3fYebc3xqOzewKCkE/3xo/pqZQPh0nl2FJz83ADciNE5yn8lj87xOikmyEc
+          CKp8AZFhAoGBAOU9OuZjW+r6B2t9kjsr2NYggOYXVs7OItVebvVPeoQGla4VlfWt
+          iqOartFdouyIeBJHC9tXJ2FoJbgGfhMdqmiuHj2MUJu7bnyS+SVDoQRiF1hrHi6j
+          tfWOlmniiAQus7F/G+e8EqsK6Mqgw6rycqmNLlAZ7pSSFV17kQDlPz4xAoGBAOGX
+          Gvniu5Y9dwEgyA/TKPg2GCY5nuls0aAlqaj53Mzb3AesBdC89Xpr7JJz4cTgR8yC
+          QLnfsd6UU5lINh7UlwcBfi0xe9F8hOVyza6y1dkzAoGAF5qCYg6A/GTaNrsrP2R4
+          YzPdkdN9YLXg6E9c5W1VlBqJdu9KDY3c5JOcxHn7uJckpd0i32bN6z2qBJTGjnlT
+          fovPGU9FTYOzEKihdrDL94OSG8yLwwmgRrRz0Fs+3g9g+Tm5SdcXpPzuk06SVxu3
+          qrWauyywYCPah1Gd0JXKOUECgYEAwT265oN8V4plrLxaNSgAFjSJKM0NMlpe3nIb
+          7A9TBTWQd3npHyCnhHgDQzknTxIHF+apzAJf5Bu0tB+roHqmbrCP0TasnJHdo4x/
+          n8KhVE7FVUETHjKvKPYICZAAhpAEkPfGkDJBgEOYtQX5bkF3OcYamoX35YP/pzjH
+          Xe3NZ6cCgYA1RaO/O9lmsNs1Zz+np9XgQGj7D0K/NJRAM1Y6rlWnNo9DIDUf9ObU
+          4j+FnxzxNKP6gxAr7NvC9JExErmfQ6JtbKG2MlT1BEnZIDKx/bSQYoYvNEHucx5L
+          J3WBAlvIsRqYxgaWi5VojtINjr6UntpU/pnSyVOW558J/4RpHQzEdQ==
+          -----END RSA PRIVATE KEY-----
+
+  pre_tasks:
+    - name: Install python-pip
+      apt: name=python-pip state=present
+
+    - name: Install awscli
+      pip: name=awscli state=present
+
+  roles:
+    #- wunzeco.java
+    #- ogonna.iwunze.jenkins
+    - ansible-jenkins-extra

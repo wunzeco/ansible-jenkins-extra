@@ -1,0 +1,12 @@
+---
+
+- meta: flush_handlers
+
+- name: Wait for Jenkins
+  wait_for: host={{ ansible_eth0.ipv4.address }} port={{ jenkins_extra_port }} delay=10
+
+- include: ssh-creds.yml
+
+- include: aws-creds.yml
+
+- include: job-creds.yml

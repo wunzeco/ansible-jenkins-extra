@@ -1,0 +1,16 @@
+Host *
+  User {{ jenkins_extra_ssh_user }}
+  IdentityFile {{ jenkins_extra_ssh_identity_file }}
+  NoHostAuthenticationForLocalhost yes
+  BatchMode yes
+  CheckHostIP no
+  ConnectionAttempts 2
+  ConnectTimeout 10
+  HostBasedAuthentication no
+  UserKnownHostsFile /dev/null
+  ForwardAgent yes
+  PasswordAuthentication no
+  StrictHostKeyChecking no
+  LogLevel Error
+
+

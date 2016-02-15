@@ -1,0 +1,14 @@
+---
+
+- name: Copy create-credentials-config script
+  copy: src=create-credentials-config.py dest={{ jenkins_extra_home }}/create-credentials-config.py owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0755
+
+- name: Create ssh private credentials config on Jenkins
+  command: python {{ jenkins_extra_home }}/create-credentials-config.py ssh-private-key -I {{ item.id }} -D {{ item.description }} -U {{ item.user }} -F {{ item.key_file }} 
+  with_items: jenkins_extra_job_creds_config
+  when: item.type == 'ssh-private-key'
+
+- name: Create secret text credentials config on Jenkins
+  command: python {{ jenkins_extra_home }}/create-credentials-config.py secret-text -I {{ item.id }} -D {{ item.description }} -T {{ item.secret }} 
+  with_items: jenkins_extra_job_creds_config
+  when: item.type == 'secret-text'
