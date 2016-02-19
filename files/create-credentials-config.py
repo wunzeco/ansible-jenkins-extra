@@ -38,7 +38,28 @@ SCOPE = 'GLOBAL'
 BASE_URL = 'http://localhost:8080'
 
 
-def secret_text_payload(opts):
+def username_password_credentials_payload(opts):
+    """ Return secret text payload """
+    data = {
+        'credentials': {
+            'scope': opts['scope'],
+            'id': opts['creds_id'],
+            'description': opts['description'],
+            'username': opts['creds_user'],
+            'password': opts['creds_pass'],
+            'stapler-class': "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"
+            
+        }
+    }
+    payload = {
+        'json': json.dumps(data),
+        'Submit': "OK",
+    }
+    
+    return payload
+
+
+def string_credentials_payload(opts):
     """ Return secret text payload """
     data = {
         'credentials': {
@@ -170,9 +191,10 @@ if __name__ == '__main__':
         opts['payload'] = ssh_private_key_payload(opts)
         create_credentials(opts)
     elif opts['sub_command'] == 'userpass':
-        print "to be implemented"
+        opts['payload'] = username_password_credentials_payload(opts)
+        create_credentials(opts)
     elif opts['sub_command'] == 'secret-text':
-        opts['payload'] = secret_text_payload(opts)
+        opts['payload'] = string_credentials_payload(opts)
         create_credentials(opts)
 
     sys.exit(0)
