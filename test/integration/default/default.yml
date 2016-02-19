@@ -5,7 +5,7 @@
     #########################
     ##  Jenkins Job Creds  ##
     #########################
-    jenkins_extra_jenkins_creds_config:
+    jenkins_extra_job_creds_config:
       - id: infra-myawesomerepo-git-creds-id
         description: infra-myawesomerepo
         key_file: /var/lib/jenkins/.ssh/infra-myawesomerepo
@@ -19,11 +19,11 @@
         description: infra-aws-secret-access-key
         secret: 'someAwsSecreteAccessKey'
         type: secret-text
-      #- id: infra-nexus-login-creds-id
-      #  description: infra-nexus-login
-      #  user: jenkins
-      #  pass: P@ssword!
-      #  type: userpass
+      - id: infra-nexus-login-creds-id
+        description: infra-nexus-login
+        user: jenkins
+        pass: P@ssword!
+        type: userpass
     #######################
     ##  AWS Credentials  ## 
     #######################
@@ -75,5 +75,5 @@
 
   roles:
     - wunzeco.java
-    - ogonna.iwunze.jenkins
+    - wunzeco.jenkins
     - ansible-jenkins-extra
