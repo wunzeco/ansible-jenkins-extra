@@ -2,8 +2,12 @@
 
 - meta: flush_handlers
 
-- name: Wait for Jenkins
-  wait_for: host=0.0.0.0 port={{ jenkins_extra_port }} delay=120
+- name: Wait for Jenkins to be available
+  shell: curl -s -o /dev/null -I -w "%{http_code}" http://localhost:{{ jenkins_extra_port }}
+  register: resp
+  until: resp.stdout.find("200") != -1
+  retries: 5
+  delay: 10
 
 - include: ssh-creds.yml
 
