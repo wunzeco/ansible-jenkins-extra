@@ -14,3 +14,5 @@
 - include: aws-creds.yml
 
 - include: job-creds.yml
+
+- include: shell-config.yml
