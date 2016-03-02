@@ -2,42 +2,42 @@
 
 - name: Set aws default profile access key ids 
   command: aws configure set aws_access_key_id {{ item.aws_access_key_id }}
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile == 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
 
 - name: Set aws default profile secret access keys 
   command: "aws configure set aws_secret_access_key {{ item.aws_secret_access_key }}"
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile == 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
 
 - name: Set aws default profile region
   command: "aws configure set region {{ item.region }}"
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile == 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
 
 - name: Set aws access key ids
   command: "aws configure set profile.{{ item.profile }}.aws_access_key_id {{ item.aws_access_key_id }}"
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile != 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
 
 - name: Set aws secret access keys 
   command: "aws configure set profile.{{ item.profile }}.aws_secret_access_key {{ item.aws_secret_access_key }}"
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile != 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
 
 - name: Set aws region
   command: "aws configure set profile.{{ item.profile }}.region {{ item.region }}"
-  with_items: jenkins_extra_aws_creds
+  with_items: "{{ jenkins_extra_aws_creds }}"
   when: item.profile != 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
