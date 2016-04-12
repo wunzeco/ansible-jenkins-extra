@@ -17,7 +17,7 @@ jenkins_extra_ssh_keys: []                # See example below
 ##  Example config  ##
 ######################
 
-# jenkins_extra_jenkins_creds_config:
+# jenkins_extra_job_creds_config:
 #   - id: infra-myawesomerepo-git-creds-id
 #     description: infra-myawesomerepo
 #     key_file: /var/lib/jenkins/.ssh/infra-myawesomerepo
