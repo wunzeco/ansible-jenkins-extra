@@ -129,8 +129,12 @@ def create_credentials(opts):
         auth = requests.auth.HTTPBasicAuth(opts['username'], opts['password'])
 
     r = requests.post(url, auth=auth, data=opts['payload'])
-    if r.status_code != requests.codes.ok:
+    try:
+        r.raise_for_status()
+    except Exception as e:
         print r.text
+        logging.error('An exception occurred: (%s)', e)
+        sys.exit(2)
     logging.info('Credentials created - id: (%s)', opts['creds_id'])
 
     return True

@@ -2,6 +2,8 @@
 - hosts: test-kitchen
 
   vars:
+    jenkins_extra_login_user: build-ci
+    jenkins_extra_login_pass: build-pass
     #########################
     ##  Jenkins Job Creds  ##
     #########################
