@@ -4,8 +4,8 @@
 #   Automate creation of credentials on Jenkins
 #       *  ssh private key
 #       *  secret text
+#       *  username-password
 # ToDo: 
-#   * username-password
 #   * secret file
 
 #
