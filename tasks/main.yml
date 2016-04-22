@@ -2,10 +2,17 @@
 
 - meta: flush_handlers
 
+#- name: Wait for Jenkins to be available
+#  shell: curl -s -o /dev/null -I -w "%{http_code}" http://localhost:{{ jenkins_extra_port }}
+#  register: resp
+#  until: resp.stdout.find("200") != -1
+#  retries: 10
+#  delay: 10
+
 - name: Wait for Jenkins to be available
-  shell: curl -s -o /dev/null -I -w "%{http_code}" http://localhost:{{ jenkins_extra_port }}
+  uri: url="http://localhost:{{ jenkins_extra_port }}"
   register: resp
-  until: resp.stdout.find("200") != -1
+  until: resp.status == 200
   retries: 10
   delay: 10
 
