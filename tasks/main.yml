@@ -5,7 +5,7 @@
 - name: Wait for Jenkins to be available
   uri: url="http://localhost:{{ jenkins_extra_port }}"
   register: resp
-  until: resp.status == 200
+  until: resp.status|default(false) == 200
   retries: 10
   delay: 10
 
