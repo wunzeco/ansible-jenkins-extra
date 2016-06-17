@@ -115,25 +115,48 @@ def ssh_private_key_payload(opts):
         'json': json.dumps(data),
         'Submit': "OK",
     }
-    
+
     return payload
 
 
-def create_credentials(opts):
+def get_request_crumb(opts):
     """ Create credentials config on Jenkins """
 
-    url = "{0}/credential-store/domain/_/createCredentials".format(opts['base_url'])
+    url = "{0}/crumbIssuer/api/json".format(opts['base_url'])
 
     auth = None
     if opts['username'] and opts['password']:
         auth = requests.auth.HTTPBasicAuth(opts['username'], opts['password'])
 
-    r = requests.post(url, auth=auth, data=opts['payload'])
+    resp = requests.get(url, auth=auth)
     try:
-        r.raise_for_status()
-    except Exception as e:
-        print r.text
-        logging.error('An exception occurred: (%s)', e)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as ex:
+        print resp.text
+        logging.error('An exception occurred: (%s)', ex)
+        sys.exit(2)
+    logging.info('Obtained jenkins request crumb')
+
+    return json.loads(resp.text)
+
+
+def create_credentials(opts):
+    """ Create credentials config on Jenkins """
+
+    url = "{0}/credentials/store/system/domain/_/createCredentials".format(opts['base_url'])
+
+    crumb = get_request_crumb(opts)
+    headers = {crumb['crumbRequestField']: crumb['crumb']}
+    auth = None
+    if opts['username'] and opts['password']:
+        auth = requests.auth.HTTPBasicAuth(opts['username'], opts['password'])
+
+    resp = requests.post(url, auth=auth, headers=headers, data=opts['payload'])
+    try:
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as ex:
+        print resp.text
+        logging.error('An exception occurred: (%s)', ex)
         sys.exit(2)
     logging.info('Credentials created - id: (%s)', opts['creds_id'])
 
@@ -181,25 +204,25 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
-    opts = vars(args)
-    logging.debug("Arguments: %s", opts)
-    
-    opts['scope'] = SCOPE
+    options = vars(args)
+    logging.debug("Arguments: %s", options)
 
-    if opts['sub_command'] == 'ssh-private-key':
-        if opts['creds_key_file'] and opts['creds_key_src']:
+    options['scope'] = SCOPE
+
+    if options['sub_command'] == 'ssh-private-key':
+        if options['creds_key_file'] and options['creds_key_src']:
             print 'Specify either key file or key source'
-        if not (opts['creds_key_file'] or opts['creds_key_src']):
+        if not (options['creds_key_file'] or options['creds_key_src']):
             print 'Missing key file or key source'
             sys.exit(1)
-        opts['payload'] = ssh_private_key_payload(opts)
-        create_credentials(opts)
-    elif opts['sub_command'] == 'userpass':
-        opts['payload'] = username_password_credentials_payload(opts)
-        create_credentials(opts)
-    elif opts['sub_command'] == 'secret-text':
-        opts['payload'] = string_credentials_payload(opts)
-        create_credentials(opts)
+        options['payload'] = ssh_private_key_payload(options)
+        create_credentials(options)
+    elif options['sub_command'] == 'userpass':
+        options['payload'] = username_password_credentials_payload(options)
+        create_credentials(options)
+    elif options['sub_command'] == 'secret-text':
+        options['payload'] = string_credentials_payload(options)
+        create_credentials(options)
 
     sys.exit(0)
 

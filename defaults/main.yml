@@ -3,16 +3,18 @@ jenkins_extra_user:  jenkins
 jenkins_extra_group: "{{ jenkins_extra_user }}"
 jenkins_extra_home:  "/var/lib/{{ jenkins_extra_user }}"
 
-jenkins_extra_ssh_user: ubuntu      # ssh user for logging on to jenkins managed nodes
+jenkins_extra_ssh_user: ubuntu            # ssh user for logging on to jenkins managed nodes
 jenkins_extra_ssh_identity_file: '~/.ssh/id_rsa'
 
 jenkins_extra_port: 8080              # Jenkins port
 
-jenkins_extra_job_creds_config: []   # See example below
-jenkins_extra_aws_creds:        []   # See example below
-jenkins_extra_ssh_keys:         []   # See example below
-jenkins_extra_login_user:       ''   # 'username' for auth to Jenkins
-jenkins_extra_login_pass:       ''   # 'password' for auth to Jenkins
+jenkins_extra_job_creds_config: []        # See example below
+jenkins_extra_aws_creds:        []        # See example below
+jenkins_extra_ssh_keys:         []        # See example below
+jenkins_extra_login_user:       ''        # 'username' for auth to Jenkins
+jenkins_extra_login_pass:       ''        # 'password' for auth to Jenkins
+
+jenkins_extra_jenkins_major_release: 2    # jenkins major release 
 
 
 ######################

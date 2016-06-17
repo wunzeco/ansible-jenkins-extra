@@ -1,11 +1,12 @@
 ---
 
-- set_fact: jenkins_extra_login_opts="-u {{ jenkins_extra_login_user }} -p {{ jenkins_extra_login_pass }}"
+- name: Set login opts
+  set_fact: jenkins_extra_login_opts="-u {{ jenkins_extra_login_user }} -p {{ jenkins_extra_login_pass }}"
   when: jenkins_extra_login_user and jenkins_extra_login_pass
 
 - name: Copy create-credentials-config script
   copy: 
-    src:   create-credentials-config.py 
+    src:   "create-credentials-config-v{{ jenkins_extra_jenkins_major_release }}.py"
     dest:  "{{ jenkins_extra_home }}/create-credentials-config.py"
     owner: "{{ jenkins_extra_user }}"
     group: "{{ jenkins_extra_group }}"
@@ -14,7 +15,8 @@
 - name: Create username-password credentials config on Jenkins
   command: >
       python {{ jenkins_extra_home }}/create-credentials-config.py userpass \
-        -I {{ item.id }} -D {{ item.description }} -U {{ item.user }} -P {{ item.pass }} \
+        -I {{ item.id }} -D {{ item.description }} \
+        -U {{ item.user }} -P {{ item.pass }} \
         {{ jenkins_extra_login_opts|default('') }}
   with_items: "{{ jenkins_extra_job_creds_config }}"
   when: item.type == 'userpass'
@@ -22,7 +24,8 @@
 - name: Create ssh private credentials config on Jenkins
   command: >
       python {{ jenkins_extra_home }}/create-credentials-config.py ssh-private-key \
-        -I {{ item.id }} -D {{ item.description }} -U {{ item.user }} -F {{ item.key_file }} \
+        -I {{ item.id }} -D {{ item.description }} \
+        -U {{ item.user }} -F {{ item.key_file }} \
         {{ jenkins_extra_login_opts|default('') }}
   with_items: "{{ jenkins_extra_job_creds_config }}"
   when: item.type == 'ssh-private-key'
