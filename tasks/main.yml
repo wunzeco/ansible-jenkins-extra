@@ -1,10 +1,14 @@
 ---
 
-- include: ssh-creds.yml
+- name: SSH creds config
+  include: ssh-creds.yml
 
-- include: aws-creds.yml
+- name: AWS creds config
+  include: aws-creds.yml
 
-- include: shell-config.yml
+- name: Shell config
+  include: shell-config.yml
 
-- include: job-creds.yml
+- name: Jobs creds config
+  include: job-creds.yml
   when: jenkins_extra_jenkins_role == 'master'
