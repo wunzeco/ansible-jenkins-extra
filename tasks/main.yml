@@ -1,33 +1,10 @@
 ---
 
-- meta: flush_handlers
-
-- name: Get admin password
-  shell: >
-      cat {{ jenkins_extra_home }}/secrets/initialAdminPassword || echo 'NONE'
-  register: admin_pass
-
-- set_fact: jenkins_extra_login_user=admin
-  when: not jenkins_extra_login_user and admin_pass.stdout != 'NONE'
-
-- set_fact: jenkins_extra_login_pass={{ admin_pass.stdout }}
-  when: not jenkins_extra_login_pass and admin_pass.stdout != 'NONE'
-
-- name: Wait for Jenkins to be available
-  uri: 
-    url:  "http://localhost:{{ jenkins_extra_port }}"
-    user: "{{ jenkins_extra_login_user }}"
-    password: "{{ jenkins_extra_login_pass }}"
-    force_basic_auth: yes
-  register: resp
-  until: resp.status|default(false) == 200
-  retries: 10
-  delay: 10
-
 - include: ssh-creds.yml
 
 - include: aws-creds.yml
 
-- include: job-creds.yml
-
 - include: shell-config.yml
+
+- include: job-creds.yml
+  when: jenkins_extra_jenkins_role == 'master'

@@ -14,7 +14,8 @@ jenkins_extra_ssh_keys:         []        # See example below
 jenkins_extra_login_user:       ''        # 'username' for auth to Jenkins
 jenkins_extra_login_pass:       ''        # 'password' for auth to Jenkins
 
-jenkins_extra_jenkins_major_release: 2    # jenkins major release 
+jenkins_extra_jenkins_major_release:  2   # jenkins major release 
+jenkins_extra_jenkins_role: master
 
 
 ######################

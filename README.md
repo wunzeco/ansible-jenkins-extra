@@ -47,6 +47,11 @@ For more complete example on configuration please see `defaults/main.yml`.
 ```
 
 
+## Testing
+
+Run `kitchen test` command to test this repo
+
+
 ## Dependencies
 
 none
