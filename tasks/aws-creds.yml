@@ -6,6 +6,7 @@
   when: item.profile == 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
+  no_log: true
 
 - name: Set aws default profile secret access keys 
   command: "aws configure set aws_secret_access_key {{ item.aws_secret_access_key }}"
@@ -13,6 +14,7 @@
   when: item.profile == 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
+  no_log: true
 
 - name: Set aws default profile region
   command: "aws configure set region {{ item.region }}"
@@ -27,6 +29,7 @@
   when: item.profile != 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
+  no_log: true
 
 - name: Set aws secret access keys 
   command: "aws configure set profile.{{ item.profile }}.aws_secret_access_key {{ item.aws_secret_access_key }}"
@@ -34,6 +37,7 @@
   when: item.profile != 'default'
   become: yes
   become_user: "{{ jenkins_extra_user }}"
+  no_log: true
 
 - name: Set aws region
   command: "aws configure set profile.{{ item.profile }}.region {{ item.region }}"

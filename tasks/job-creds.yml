@@ -44,6 +44,7 @@
         {{ jenkins_extra_login_opts|default('') }}
   with_items: "{{ jenkins_extra_job_creds_config }}"
   when: item.type == 'userpass'
+  no_log: true
 
 - name: Create ssh private credentials config on Jenkins
   command: >
@@ -53,6 +54,7 @@
         {{ jenkins_extra_login_opts|default('') }}
   with_items: "{{ jenkins_extra_job_creds_config }}"
   when: item.type == 'ssh-private-key'
+  no_log: true
 
 - name: Create secret text credentials config on Jenkins
   command: >
@@ -61,3 +63,4 @@
         {{ jenkins_extra_login_opts|default('') }}
   with_items: "{{ jenkins_extra_job_creds_config }}"
   when: item.type == 'secret-text'
+  no_log: true

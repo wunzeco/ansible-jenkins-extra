@@ -7,11 +7,13 @@
   copy: content="{{ item.private_pem }}" dest={{ jenkins_extra_home }}/.ssh/{{ item.keyname }}.pem owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0600
   when: item.private_pem|default(false)
   with_items: "{{ jenkins_extra_ssh_keys }}"
+  no_log: true
 
 - name: Copy ssh PRIVATE keys to jenkins user ssh directory
   copy: content="{{ item.private }}" dest={{ jenkins_extra_home }}/.ssh/{{ item.keyname }} owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0600
   when: item.private|default(false)
   with_items: "{{ jenkins_extra_ssh_keys }}"
+  no_log: true
 
 - name: Copy ssh PUBLIC keys to jenkins user ssh directory
   copy: content="{{ item.public }}" dest={{ jenkins_extra_home }}/.ssh/{{ item.keyname }}.pub owner={{ jenkins_extra_user }} group={{ jenkins_extra_group }} mode=0644
