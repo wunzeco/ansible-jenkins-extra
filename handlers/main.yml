@@ -1,4 +1,5 @@
 ---
 
-- name: Restart jenkins
-  service: name=jenkins state=restarted
+# this won't work for jenkins-slave. FIX!!!
+#- name: Restart jenkins
+#  service: name=jenkins state=restarted
