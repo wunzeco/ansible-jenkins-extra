@@ -14,8 +14,9 @@
       yum: name=python-pip state=present
       when: ansible_os_family|lower == 'redhat'
 
-    - name: Install awscli
-      pip: name=awscli state=present
+    - name: Install required pip packages
+      pip: name={{ item }} state=present
+      with_items: [ awscli, requests ]
 
   roles:
     - wunzeco.java
