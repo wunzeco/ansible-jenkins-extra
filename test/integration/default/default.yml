@@ -1,140 +1,18 @@
 ---
 - hosts: test-kitchen
 
-  vars:
-    #jenkins_version: 1.651.3
-    #jenkins_extra_jenkins_major_release: 1
-    jenkins_plugins:
-      - "ansicolor:0.4.2"
-      - "ant:1.3"
-      - "antisamy-markup-formatter:1.5"
-      - "authentication-tokens:1.2"
-      - "build-monitor-plugin:1.9+build.201606131328"
-      - "build-name-setter:1.6.5"
-      - "build-pipeline-plugin:1.5.3.1"
-      - "claim:2.8"
-      - "conditional-buildstep:1.3.5"
-      - "copyartifact:1.38"
-      - "credentials-binding:1.8"
-      - "credentials:2.1.1"
-      - "dashboard-view:2.9.10"
-      - "delivery-pipeline-plugin:0.9.11"
-      - "external-monitor-job:1.4"
-      - "icon-shim:2.0.3"
-      - "javadoc:1.3"
-      - "jquery:1.11.2-0"
-      - "junit:1.13"
-      - "ldap:1.12"
-      - "mailer:1.17"
-      - "matrix-auth:1.4"
-      - "matrix-project:1.7"
-      - "maven-plugin:2.13"
-      - "pam-auth:1.2"
-      - "parameterized-trigger:2.31"
-      - "plain-credentials:1.2"
-      - "run-condition:1.0"
-      - "script-security:1.19"
-      - "ssh-credentials:1.12"
-      - "structs:1.1.1"
-      - "token-macro:1.12.1"
-      - "windows-slaves:1.1"
-      - "workflow-step-api:2.1"
-    #########################
-    ##  Jenkins Job Creds  ##
-    #########################
-    jenkins_extra_job_creds_config:
-      - id: infra-myawesomerepo-git-creds-id
-        description: infra-myawesomerepo
-        key_file: /var/lib/jenkins/.ssh/infra-myawesomerepo
-        user: jenkins
-        type: ssh-private-key
-      - id: infra-aws-access-key-id-creds-id
-        description: infra-aws-access-key-id
-        secret: 'someAwsAccessKeyId'
-        type: secret-text
-      - id: infra-aws-secret-access-key-creds-id
-        description: infra-aws-secret-access-key
-        secret: 'someAwsSecreteAccessKey'
-        type: secret-text
-      - id: infra-nexus-login-creds-id
-        description: infra-nexus-login
-        user: jenkins
-        pass: P@ssword!
-        type: userpass
-    #######################
-    ##  AWS Credentials  ## 
-    #######################
-    jenkins_extra_aws_creds:
-      - profile: default
-        aws_access_key_id: 'someAwsAccessKeyId'
-        aws_secret_access_key: 'someAwsSecretAccessKey'
-        region: 'eu-central-1'
-    ########################
-    ##  Jenkins SSH Keys  ##
-    ########################
-    jenkins_extra_ssh_keys:
-      # infra-myawesomekey
-      - keyname: infra-myawesomekey
-        public: |
-          ssh-rsa AAAAB3NzaC1yc2EAAAATAQABAAABAQDKAkJSkrlmO0dFgTio0WDGNJMztSBqyEyhCitj7Y9j/T5XO1s2pLlSNiRBbWIEkS1K3P6L4Uwxqu9WI7zIDyKkS1f6d3fCbl+5FQMUMb/x737BEaM7enO4oeHyldt/AWjqMfenLxZsabmKQJvlNN0e4nks+kO/F4AuAJwI0RaONHU7mjNEYl0pSXOURIHlNeFY87yJ0R/SPmk3l0xAArR8NqpAikLCdT7xetquboUqX+P1Jz0zL4pHFk/jXE8424Sd4UaYL/uvGOQnVJRxLF2/lYKD9y9WAOZ/3c4B7RBx8UYvIOXDj8/+sNCWeRaCizgFq5MZ4oKlYJ9H3qsYFezD infra-myawesomekey@jenkins
-        private: |
-          -----BEGIN RSA PRIVATE KEY-----
-          MIIEpAIBAAKCAQEAygJCUpK5ZjtHWoE4qNFgxjSTM7UgashMoQorY+2PY/0+Vztb
-          O3pzuKHh8pXbfwFo6jH3py8WbGm5ikCb5TTdHuJ5LPpDvxeALgCcCNEWjjR1O5oz
-          RGJdKUlzlESB5TXhWPO8idEf0j5pN5dMQAK0fDaqQIpCwnU+8Xrarm6FKl/j9Sc9
-          My+KRxZP41xPONuEneFGmC/7rxjkJ1SUcSxdv5WCg/cvVgDmf93OAe0QcfFGLyDl
-          w4/P/rDQlnkWgos4BauTGeKCpWCfR96rGBXswwIDAQABAoIBAQCF2gNaNXB1pfe8
-          VbjEEwtQM8BC7SBEi+APgjW9Ds3xoFCr22T+hz/gahuOIvAC8ssyyxMfCxtfkJpp
-          WjAyKtoNmeDTBa0YFJlRYgQB75FzfW+EUio9sLhRa5h4A+QWVKBtHaHnrfnelZg4
-          HtxqmJqbCLDTura83qTgmAZ8r507wVypgYRjcvKB3lAbptGGlSYe43VR/XbMGR3k
-          YhVDr3fYebc3xqOzewKCkE/3xo/pqZQPh0nl2FJz83ADciNE5yn8lj87xOikmyEc
-          CKp8AZFhAoGBAOU9OuZjW+r6B2t9kjsr2NYggOYXVs7OItVebvVPeoQGla4VlfWt
-          iqOartFdouyIeBJHC9tXJ2FoJbgGfhMdqmiuHj2MUJu7bnyS+SVDoQRiF1hrHi6j
-          tfWOlmniiAQus7F/G+e8EqsK6Mqgw6rycqmNLlAZ7pSSFV17kQDlPz4xAoGBAOGX
-          Gvniu5Y9dwEgyA/TKPg2GCY5nuls0aAlqaj53Mzb3AesBdC89Xpr7JJz4cTgR8yC
-          QLnfsd6UU5lINh7UlwcBfi0xe9F8hOVyza6y1dkzAoGAF5qCYg6A/GTaNrsrP2R4
-          YzPdkdN9YLXg6E9c5W1VlBqJdu9KDY3c5JOcxHn7uJckpd0i32bN6z2qBJTGjnlT
-          fovPGU9FTYOzEKihdrDL94OSG8yLwwmgRrRz0Fs+3g9g+Tm5SdcXpPzuk06SVxu3
-          qrWauyywYCPah1Gd0JXKOUECgYEAwT265oN8V4plrLxaNSgAFjSJKM0NMlpe3nIb
-          7A9TBTWQd3npHyCnhHgDQzknTxIHF+apzAJf5Bu0tB+roHqmbrCP0TasnJHdo4x/
-          n8KhVE7FVUETHjKvKPYICZAAhpAEkPfGkDJBgEOYtQX5bkF3OcYamoX35YP/pzjH
-          Xe3NZ6cCgYA1RaO/O9lmsNs1Zz+np9XgQGj7D0K/NJRAM1Y6rlWnNo9DIDUf9ObU
-          4j+FnxzxNKP6gxAr7NvC9JExErmfQ6JtbKG2MlT1BEnZIDKx/bSQYoYvNEHucx5L
-          J3WBAlvIsRqYxgaWi5VojtINjr6UntpU/pnSyVOW558J/4RpHQzEdQ==
-          -----END RSA PRIVATE KEY-----
-      # infra-anotherkey
-      - keyname: infra-anotherkey
-        public: |
-          ssh-rsa AAAAB3NzaC1yc2EAAAATAQABAAABAQDKAkJSkrlmO0dFgTio0WDGNJMztSBqyEyhCitj7Y9j/T5XO1s2pLlSNiRBbWIEkS1K3P6L4Uwxqu9WI7zIDyKkS1f6d3fCbl+5FQMUMb/x737BEaM7enO4oeHyldt/AWjqMfenLxZsabmKQJvlNN0e4nks+kO/F4AuAJwI0RaONHU7mjNEYl0pSXOURIHlNeFY87yJ0R/SPmk3l0xAArR8NqpAikLCdT7xetquboUqX+P1Jz0zL4pHFk/jXE8424Sd4UaYL/uvGOQnVJRxLF2/lYKD9y9WAOZ/3c4B7RBx8UYvIOXDj8/+sNCWeRaCizgFq5MZ4oKlYJ9H3qsYFezD infra-myawesomekey@jenkins
-        private_pem: |
-          -----BEGIN RSA PRIVATE KEY-----
-          MIIEpAIBAAKCAQEAygJCUpK5ZjtHWoE4qNFgxjSTM7UgashMoQorY+2PY/0+Vztb
-          O3pzuKHh8pXbfwFo6jH3py8WbGm5ikCb5TTdHuJ5LPpDvxeALgCcCNEWjjR1O5oz
-          RGJdKUlzlESB5TXhWPO8idEf0j5pN5dMQAK0fDaqQIpCwnU+8Xrarm6FKl/j9Sc9
-          My+KRxZP41xPONuEneFGmC/7rxjkJ1SUcSxdv5WCg/cvVgDmf93OAe0QcfFGLyDl
-          w4/P/rDQlnkWgos4BauTGeKCpWCfR96rGBXswwIDAQABAoIBAQCF2gNaNXB1pfe8
-          VbjEEwtQM8BC7SBEi+APgjW9Ds3xoFCr22T+hz/gahuOIvAC8ssyyxMfCxtfkJpp
-          WjAyKtoNmeDTBa0YFJlRYgQB75FzfW+EUio9sLhRa5h4A+QWVKBtHaHnrfnelZg4
-          HtxqmJqbCLDTura83qTgmAZ8r507wVypgYRjcvKB3lAbptGGlSYe43VR/XbMGR3k
-          YhVDr3fYebc3xqOzewKCkE/3xo/pqZQPh0nl2FJz83ADciNE5yn8lj87xOikmyEc
-          CKp8AZFhAoGBAOU9OuZjW+r6B2t9kjsr2NYggOYXVs7OItVebvVPeoQGla4VlfWt
-          iqOartFdouyIeBJHC9tXJ2FoJbgGfhMdqmiuHj2MUJu7bnyS+SVDoQRiF1hrHi6j
-          tfWOlmniiAQus7F/G+e8EqsK6Mqgw6rycqmNLlAZ7pSSFV17kQDlPz4xAoGBAOGX
-          Gvniu5Y9dwEgyA/TKPg2GCY5nuls0aAlqaj53Mzb3AesBdC89Xpr7JJz4cTgR8yC
-          QLnfsd6UU5lINh7UlwcBfi0xe9F8hOVyza6y1dkzAoGAF5qCYg6A/GTaNrsrP2R4
-          YzPdkdN9YLXg6E9c5W1VlBqJdu9KDY3c5JOcxHn7uJckpd0i32bN6z2qBJTGjnlT
-          fovPGU9FTYOzEKihdrDL94OSG8yLwwmgRrRz0Fs+3g9g+Tm5SdcXpPzuk06SVxu3
-          qrWauyywYCPah1Gd0JXKOUECgYEAwT265oN8V4plrLxaNSgAFjSJKM0NMlpe3nIb
-          7A9TBTWQd3npHyCnhHgDQzknTxIHF+apzAJf5Bu0tB+roHqmbrCP0TasnJHdo4x/
-          n8KhVE7FVUETHjKvKPYICZAAhpAEkPfGkDJBgEOYtQX5bkF3OcYamoX35YP/pzjH
-          Xe3NZ6cCgYA1RaO/O9lmsNs1Zz+np9XgQGj7D0K/NJRAM1Y6rlWnNo9DIDUf9ObU
-          4j+FnxzxNKP6gxAr7NvC9JExErmfQ6JtbKG2MlT1BEnZIDKx/bSQYoYvNEHucx5L
-          J3WBAlvIsRqYxgaWi5VojtINjr6UntpU/pnSyVOW558J/4RpHQzEdQ==
-          -----END RSA PRIVATE KEY-----
+  vars_files:
+    - roles/ansible-jenkins-extra/test/vars.yml
+    - roles/ansible-jenkins-extra/test/{{ ansible_os_family|lower }}.yml
 
   pre_tasks:
-    - name: Install python-pip
+    - name: Install python-pip | Debian
       apt: name=python-pip state=present
+      when: ansible_os_family|lower == 'debian'
+
+    - name: Install python-pip | RedHat
+      yum: name=python-pip state=present
+      when: ansible_os_family|lower == 'redhat'
 
     - name: Install awscli
       pip: name=awscli state=present
