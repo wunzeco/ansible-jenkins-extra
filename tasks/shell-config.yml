@@ -1,11 +1,19 @@
 ---
 
 - name: Configure .profile to start ssh-agent
-  lineinfile: dest={{ jenkins_extra_home }}/.profile regexp='^eval.*ssh-agent' line="eval $(ssh-agent -s) {{ '#' }} Start ssh-agent" create=yes
+  lineinfile:
+    dest:   "{{ jenkins_extra_home }}/.profile"
+    regexp: '^eval.*ssh-agent'
+    line:   "eval $(ssh-agent -s) {{ '#' }} Start ssh-agent"
+    create: yes
   register: ssh_agent_config
 
 - name: Configure .profile to add private key identities to ssh-agent
-  lineinfile: dest={{ jenkins_extra_home }}/.profile regexp='^ssh-add' line="ssh-add $HOME/.ssh/*.pem {{ '#' }} Add private keys to ssh-agent" create=yes
+  lineinfile:
+    dest:   "{{ jenkins_extra_home }}/.profile"
+    regexp: '^ssh-add'
+    line:   "ssh-add $HOME/.ssh/*.pem {{ '#' }} Add private keys to ssh-agent"
+    create: yes
 
 - name: Restart jenkins
   service: name=jenkins state=restarted
