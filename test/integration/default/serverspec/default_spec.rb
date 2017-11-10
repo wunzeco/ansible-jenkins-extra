@@ -41,3 +41,10 @@ describe file("#{jenkins_extra_home}/.profile") do
   it { should contain %r|^eval \$(ssh-agent -s)| }
   it { should contain %r|^ssh-add \$HOME/\.ssh/\*.pem| }
 end
+
+describe file("#{jenkins_extra_home}/github-plugin-configuration.xml") do
+  it { should contain %r|baz| }
+  it { should contain %r|1\.2\.3| }
+  it { should be_file }
+  it { should be_mode 644 }
+end

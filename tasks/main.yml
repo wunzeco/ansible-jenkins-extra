@@ -12,3 +12,7 @@
 - name: Jobs creds config
   include: job-creds.yml
   when: jenkins_extra_jenkins_role == 'master'
+
+- name: Github Server config
+  include: github-config.yml
+  when: jenkins_extra_github_config_enabled
