@@ -14,8 +14,16 @@ jenkins_extra_ssh_keys:         []        # See example below
 jenkins_extra_login_user:       ''        # 'username' for auth to Jenkins
 jenkins_extra_login_pass:       ''        # 'password' for auth to Jenkins
 
-jenkins_extra_jenkins_major_release:  2   # jenkins major release 
+jenkins_extra_jenkins_major_release:  2   # jenkins major release
 jenkins_extra_jenkins_role: master
+
+jenkins_extra_github_config_enabled: no
+jenkins_extra_github_plugin_version: 1.27.0
+jenkins_extra_github_server: github.com
+jenkins_extra_github_api: https://api.github.com
+jenkins_extra_github_automanage_hooks: "true"
+jenkins_extra_github_webhook_creator_token_name:
+jenkins_extra_github_webhook_signing_token_name:
 
 
 ######################
@@ -41,17 +49,17 @@ jenkins_extra_jenkins_role: master
 #     user: jenkins
 #     pass: P@ssword!
 #     type: userpass
-# 
-# 
+#
+#
 # #######################
-# ##  AWS Credentials  ## 
+# ##  AWS Credentials  ##
 # #######################
 # jenkins_extra_aws_creds:
 #   - profile: default
 #     aws_access_key_id: 'someAwsAccessKeyId'
 #     aws_secret_access_key: 'someAwsSecretAccessKey'
 #     region: 'eu-central-1'
-# 
+#
 # ################################
 # ##  Jenkins SSH Keys - START  ##
 # ################################

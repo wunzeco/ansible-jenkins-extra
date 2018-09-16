@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<github-plugin-configuration plugin="github@{{ jenkins_extra_github_plugin_version }}">
+  <configs>
+    <github-server-config>
+      <name>{{ jenkins_extra_github_server }}</name>
+      <apiUrl>{{ jenkins_extra_github_api }}</apiUrl>
+      <manageHooks>{{ jenkins_extra_github_automanage_hooks }}</manageHooks>
+      <credentialsId>{{ jenkins_extra_github_webhook_creator_token_name }}</credentialsId>
+      <clientCacheSize>20</clientCacheSize>
+    </github-server-config>
+  </configs>
+  <hookSecretConfig>
+    <credentialsId>{{ jenkins_extra_github_webhook_signing_token_name }}</credentialsId>
+  </hookSecretConfig>
+</github-plugin-configuration>

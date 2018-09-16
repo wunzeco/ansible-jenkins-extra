@@ -124,7 +124,7 @@ jenkins_extra_job_creds_config:
     pass: P@ssword!
     type: userpass
 #######################
-##  AWS Credentials  ## 
+##  AWS Credentials  ##
 #######################
 jenkins_extra_aws_creds:
   - profile: default
@@ -193,3 +193,11 @@ jenkins_extra_ssh_keys:
       4j+FnxzxNKP6gxAr7NvC9JExErmfQ6JtbKG2MlT1BEnZIDKx/bSQYoYvNEHucx5L
       J3WBAlvIsRqYxgaWi5VojtINjr6UntpU/pnSyVOW558J/4RpHQzEdQ==
       -----END RSA PRIVATE KEY-----
+
+jenkins_extra_github_config_enabled: yes
+jenkins_extra_github_plugin_version: 1.2.3
+jenkins_extra_github_server: github.com
+jenkins_extra_github_api: https://api.github.com
+jenkins_extra_github_automanage_hooks: "true"
+jenkins_extra_github_webhook_creator_token_name: foo
+jenkins_extra_github_webhook_signing_token_name: baz

@@ -1,0 +1,10 @@
+---
+
+  - name: Create github plugin configuration xml
+    template:
+      dest: "{{ jenkins_extra_home }}/github-plugin-configuration.xml"
+      src: "github-plugin-configuration.xml.j2"
+      group: "{{ jenkins_extra_user }}"
+      owner: "{{ jenkins_extra_user }}"
+      mode: 0644
+    notify: Restart jenkins
